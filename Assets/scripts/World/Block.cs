@@ -14,7 +14,7 @@ public class Block
     public Vector3 absPosition;
     private float health;
     private float maxHealth;
-    private float[] MaxHealth = { -1f, 10f, 10f, 20f };
+    private float[] MaxHealth = { -1f, 10f, 10f, 20f, 10f };
 
     private BlockType bType;
 

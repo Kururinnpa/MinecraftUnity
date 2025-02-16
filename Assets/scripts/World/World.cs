@@ -25,6 +25,22 @@ public class World : MonoBehaviour
         seed = UnityEngine.Random.Range(100, 300);
     }
 
+    void Start()
+    {
+        gameObject.name = "World";
+        SetSeed();
+        GenerateWorld();
+        GeneratePlayer();
+    }
+
+    public void InitWorld()
+    {
+        gameObject.name = "World";
+        SetSeed();
+        GenerateWorld();
+        GeneratePlayer();
+    }
+
     // Update is called once per frame
     void Update()
     {

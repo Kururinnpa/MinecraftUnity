@@ -8,5 +8,5 @@ public class Item : ScriptableObject
     public string itemName;
     public Sprite icon;
     public BlockType bType;
-    public static string[] ItemTypes = { "", "Dirt", "Dirt", "Stone" };
+    public static string[] ItemTypes = { "", "Dirt", "Dirt", "Stone", "Lava" };
 }

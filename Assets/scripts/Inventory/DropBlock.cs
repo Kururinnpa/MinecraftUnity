@@ -66,9 +66,9 @@ public class DropBlock : MonoBehaviour
         int chunkX = Mathf.FloorToInt(transform.position.x / Chunk.chunkSize);
         int chunkZ = Mathf.FloorToInt(transform.position.z / Chunk.chunkSize);
         Chunk chunk = GameObject.Find("World").GetComponent<World>().GetChunk(chunkX, chunkZ);
-        Debug.Log(chunk.gameObject);
-        Debug.Log("local pos: " + localPosition);
-        Debug.Log("if has block: " + chunk.CheckForVoxel(localPosition));
+        //Debug.Log(chunk.gameObject);
+        //Debug.Log("local pos: " + localPosition);
+        //Debug.Log("if has block: " + chunk.CheckForVoxel(localPosition));
 
         Destroy(gameObject);
         GameObject.Find("World").GetComponent<World>().RemoveDropBlock(this);

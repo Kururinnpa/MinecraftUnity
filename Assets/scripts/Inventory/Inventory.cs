@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Inventory : MonoBehaviour
 {
@@ -32,6 +33,18 @@ public class Inventory : MonoBehaviour
             newSlot.ifHotbar = false;
             newSlot.itemInSlot.gameObject.SetActive(false);
             inventorySlots.Add(newSlot);
+
+            if(GameManager.instance.isCreative)
+            {
+                Item item = Resources.Load<Item>("Items/" + Item.ItemTypes[(int)BlockType.LAVA]);
+
+                newSlot.itemInSlot.item = item;
+                newSlot.itemInSlot.image.sprite = item.icon;
+                newSlot.itemInSlot.amount = ItemInBag.maxAmount;
+                newSlot.itemInSlot.amountTXT.text = newSlot.itemInSlot.amount.ToString();
+                newSlot.itemInSlot.gameObject.SetActive(true);
+                curAmountUp++;
+            }
         }
 
         for (int i = 0; i < maxAmountDown; i++)
@@ -57,7 +70,7 @@ public class Inventory : MonoBehaviour
 
     public void ChangeState()
     {
-        if(Input.GetKeyDown(KeyCode.B))
+        if(Input.GetKeyDown(KeyCode.E))
         {
             gameObject.SetActive(!gameObject.activeSelf);
 
@@ -65,15 +78,11 @@ public class Inventory : MonoBehaviour
 
             if (gameObject.activeSelf)
             {
-                Time.timeScale = 0;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                UIManager.instance.EnableCursor();
             }
             else
             {
-                Time.timeScale = 1;
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                UIManager.instance.DisableCursor();
             }
         }
         else if(Input.GetKeyDown(KeyCode.Escape) && gameObject.activeSelf)

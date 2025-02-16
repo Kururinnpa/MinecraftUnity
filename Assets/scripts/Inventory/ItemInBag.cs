@@ -11,14 +11,14 @@ public class ItemInBag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public Image image;
     public int amount;
     public TextMeshProUGUI amountTXT;
-    public static int maxAmount = 2;
+    public static int maxAmount = 64;
     private Inventory inventory;
 
     Transform preParent; // 移动的物体初始所在的slot
 
     private void Start()
     {
-        inventory = UIManager.instance.inventory.GetComponent<Inventory>();
+        inventory = UIManager.instance.GetInventory().GetComponent<Inventory>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)

@@ -7,8 +7,9 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
-    public GameObject hotbar;
-    public GameObject inventory;
+    private GameObject hotbar;
+    private GameObject inventory;
+    private GameObject menu;
 
     // Start is called before the first frame update
     private void Awake()
@@ -22,16 +23,53 @@ public class UIManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
+    private void Update()
+    {
+        if(GameManager.instance.isInGame && menu != null)
+        {
+            menu.GetComponent<PauseMenu>().ChangeState();
+        }
+    }
+
+    public void GetUIInGame()
+    {
+        hotbar = GameObject.Find("Hotbar");
+        inventory = GameObject.Find("Inventory");
+        menu = GameObject.Find("Menu");
+        menu.SetActive(false);
+    }
+
     public void UpdateUIState()
     {
-        if(inventory.activeSelf)
+        if (GameManager.instance.isInGame)
         {
-            hotbar.SetActive(false);
+            if (inventory.activeSelf)
+            {
+                hotbar.SetActive(false);
+            }
+            else
+            {
+                hotbar.SetActive(true);
+            }
         }
-        else
-        {
-            hotbar.SetActive(true);
-        }
+    }
+
+    public GameObject GetInventory()
+    {
+        return GameManager.instance.isInGame ? inventory : null;
+    }
+
+    public void EnableCursor()
+    {
+        Time.timeScale = 0;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void DisableCursor()
+    {
+        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }
