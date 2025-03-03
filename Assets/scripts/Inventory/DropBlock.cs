@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class DropBlock : MonoBehaviour
 {
@@ -28,6 +27,8 @@ public class DropBlock : MonoBehaviour
 
         cubeMat = Resources.Load<Material>("Materials/dropBlock");
         bType = block.GetBlockType();
+        if(bType == BlockType.GRASS)
+            bType = BlockType.DIRT;
 
         CreateCube();
         CombineBlockMeshes();
@@ -196,19 +197,12 @@ public class DropBlock : MonoBehaviour
             uv01 = Block.blockUVs[(int)BlockUVIndex.DIRT, 2];
             uv11 = Block.blockUVs[(int)BlockUVIndex.DIRT, 3];
         }
-        else if (bType == BlockType.STONE)
+        else if (bType != BlockType.AIR)
         {
-            uv00 = Block.blockUVs[(int)BlockUVIndex.STONE, 0];
-            uv10 = Block.blockUVs[(int)BlockUVIndex.STONE, 1];
-            uv01 = Block.blockUVs[(int)BlockUVIndex.STONE, 2];
-            uv11 = Block.blockUVs[(int)BlockUVIndex.STONE, 3];
-        }
-        else if (bType == BlockType.LAVA)
-        {
-            uv00 = Block.blockUVs[(int)BlockUVIndex.LAVA, 0];
-            uv10 = Block.blockUVs[(int)BlockUVIndex.LAVA, 1];
-            uv01 = Block.blockUVs[(int)BlockUVIndex.LAVA, 2];
-            uv11 = Block.blockUVs[(int)BlockUVIndex.LAVA, 3];
+            uv00 = Block.blockUVs[(int)bType, 0];
+            uv10 = Block.blockUVs[(int)bType, 1];
+            uv01 = Block.blockUVs[(int)bType, 2];
+            uv11 = Block.blockUVs[(int)bType, 3];
         }
 
         switch (side)

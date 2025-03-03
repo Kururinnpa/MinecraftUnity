@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BlockType { AIR, GRASS, DIRT, STONE, LAVA };
+public enum BlockType { AIR, GRASS, DIRT, STONE, SAND, COBBLE_STONE, COAL_ORE, IRON_ORE, GOLD_ORE, DIAMOND_ORE };
 
 public enum CubeSide { BOTTOM, TOP, RIGHT, LEFT, BACK, FRONT };
 
-public enum BlockUVIndex { GRASS_TOP, GRASS_SIDE, DIRT, STONE, LAVA };
+public enum BlockUVIndex { GRASS_TOP, GRASS_SIDE, DIRT, STONE, SAND, COBBLE_STONE, COAL_ORE, IRON_ORE, GOLD_ORE, DIAMOND_ORE };
 
 public class Block
 {
@@ -14,7 +14,7 @@ public class Block
     public Vector3 absPosition;
     private float health;
     private float maxHealth;
-    private float[] MaxHealth = { -1f, 10f, 10f, 20f, 10f };
+    private float[] MaxHealth = { -1f, 10f, 10f, 20f, 10f, 20f, 20f, 20f, 20f, 20f };
 
     private BlockType bType;
 
@@ -24,16 +24,26 @@ public class Block
 
     public static Vector2[,] blockUVs = { 
         /*GRASS TOP*/        {new Vector2( 0.125f, 0.375f ), new Vector2( 0.1875f, 0.375f),
-                                new Vector2( 0.125f, 0.4375f ),new Vector2( 0.1875f, 0.4375f )},
+                                new Vector2( 0.125f, 0.4375f ), new Vector2( 0.1875f, 0.4375f )},
         /*GRASS SIDE*/        {new Vector2( 0.1875f, 0.9375f ), new Vector2( 0.25f, 0.9375f),
-                                new Vector2( 0.1875f, 1.0f ),new Vector2( 0.25f, 1.0f )},
+                                new Vector2( 0.1875f, 1.0f ), new Vector2( 0.25f, 1.0f )},
         /*DIRT*/            {new Vector2( 0.125f, 0.9375f ), new Vector2( 0.1875f, 0.9375f),
-                                new Vector2( 0.125f, 1.0f ),new Vector2( 0.1875f, 1.0f )},
-        /*STONE*/            {new Vector2( 0, 0.875f ), new Vector2( 0.0625f, 0.875f),
-                                new Vector2( 0, 0.9375f ),new Vector2( 0.0625f, 0.9375f )},
-        /*LAVA*/            {new Vector2( 0.875f, 0.0625f ), new Vector2( 0.9375f, 0.0625f),
-                                new Vector2( 0.875f, 0.125f ),new Vector2( 0.9375f, 0.125f )}
-                        };
+                                new Vector2( 0.125f, 1.0f ), new Vector2( 0.1875f, 1.0f )},
+        /*STONE*/            {new Vector2( 0.0625f, 0.9375f ), new Vector2( 0.125f, 0.9375f ),
+                                new Vector2( 0.0625f, 1.0f ), new Vector2( 0.125f, 1.0f )},
+        /*SAND*/            {new Vector2( 0.125f, 0.875f ), new Vector2( 0.1875f, 0.875f ),
+                                new Vector2( 0.125f, 0.9375f ), new Vector2( 0.1875f, 0.9375f )},
+        /*COBBLE STONE*/    {new Vector2( 0.0f, 0.875f ), new Vector2( 0.0625f, 0.875f ),
+                                new Vector2( 0.0f, 0.9375f ), new Vector2( 0.0625f, 0.9375f )},
+        /*COAL ORE*/        {new Vector2( 0.125f, 0.8125f ), new Vector2( 0.1875f, 0.8125f ),
+                                new Vector2( 0.125f, 0.875f ), new Vector2( 0.1875f, 0.875f )},
+        /*IRON ORE*/        {new Vector2( 0.0625f, 0.8125f ), new Vector2( 0.125f, 0.8125f ),
+                                new Vector2( 0.0625f, 0.875f ), new Vector2( 0.125f, 0.875f )},
+        /*GOLD ORE*/        {new Vector2( 0.0f, 0.8125f ), new Vector2( 0.0625f, 0.8125f ),
+                                new Vector2( 0.0f, 0.875f ), new Vector2( 0.0625f, 0.875f )},
+        /*DIAMOND ORE*/        {new Vector2( 0.125f, 0.75f ), new Vector2( 0.1875f, 0.75f ),
+                                new Vector2( 0.125f, 0.8125f ), new Vector2( 0.1875f, 0.8125f )}
+    };
 
     private static Vector2[,] healthUVs =
     {
@@ -143,26 +153,12 @@ public class Block
                 uv11 = blockUVs[(int)BlockUVIndex.GRASS_SIDE, 3];
             }
         }
-        else if (bType == BlockType.DIRT)
+        else if (bType != BlockType.AIR)
         {
-            uv00 = blockUVs[(int)BlockUVIndex.DIRT, 0];
-            uv10 = blockUVs[(int)BlockUVIndex.DIRT, 1];
-            uv01 = blockUVs[(int)BlockUVIndex.DIRT, 2];
-            uv11 = blockUVs[(int)BlockUVIndex.DIRT, 3];
-        }
-        else if (bType == BlockType.STONE)
-        {
-            uv00 = blockUVs[(int)BlockUVIndex.STONE, 0];
-            uv10 = blockUVs[(int)BlockUVIndex.STONE, 1];
-            uv01 = blockUVs[(int)BlockUVIndex.STONE, 2];
-            uv11 = blockUVs[(int)BlockUVIndex.STONE, 3];
-        }
-        else if (bType == BlockType.LAVA)
-        {
-            uv00 = blockUVs[(int)BlockUVIndex.LAVA, 0];
-            uv10 = blockUVs[(int)BlockUVIndex.LAVA, 1];
-            uv01 = blockUVs[(int)BlockUVIndex.LAVA, 2];
-            uv11 = blockUVs[(int)BlockUVIndex.LAVA, 3];
+            uv00 = blockUVs[(int)bType, 0];
+            uv10 = blockUVs[(int)bType, 1];
+            uv01 = blockUVs[(int)bType, 2];
+            uv11 = blockUVs[(int)bType, 3];
         }
 
         //set cracks

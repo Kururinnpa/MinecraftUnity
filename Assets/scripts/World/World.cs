@@ -8,7 +8,10 @@ using UnityEngine.UIElements;
 
 public class World : MonoBehaviour
 {
-    private const int renderChunks = 2;
+    private const int renderChunks = 5;
+    private const int totalChunks = (renderChunks * 2 + 1) * (renderChunks * 2 + 1);
+    private int progressChunks = 0;
+
     private int seed;
     private List<Tuple<DropBlock, Vector3>> dropBlocks = new List<Tuple<DropBlock, Vector3>>();
     private Dictionary<Vector2Int, Chunk> chunkDict = new Dictionary<Vector2Int, Chunk>();
@@ -29,22 +32,22 @@ public class World : MonoBehaviour
     {
         gameObject.name = "World";
         SetSeed();
-        GenerateWorld();
         GeneratePlayer();
+        StartCoroutine(GenerateWorld());
     }
 
-    public void InitWorld()
-    {
-        gameObject.name = "World";
-        SetSeed();
-        GenerateWorld();
-        GeneratePlayer();
-    }
+    //public void InitWorld()
+    //{
+    //    gameObject.name = "World";
+    //    SetSeed();
+    //    StartCoroutine(GenerateWorld());
+    //    GeneratePlayer();
+    //}
 
     // Update is called once per frame
     void Update()
     {
-        UpdateWorld();
+        StartCoroutine(UpdateWorld());
     }
 
     public void GeneratePlayer()
@@ -54,9 +57,10 @@ public class World : MonoBehaviour
         playerObject.name = "Player";
         playerObject.tag = "Player";
         playerObject.layer = LayerMask.NameToLayer("Player");
+        playerObject.SetActive(false);
     }
 
-    public void GenerateWorld()
+    IEnumerator GenerateWorld()
     {
         int playerX = 0;
         int playerZ = 0;
@@ -64,14 +68,24 @@ public class World : MonoBehaviour
         {
             for (int z = -renderChunks; z <= renderChunks; z++)
             {
-                StartCoroutine(LoadChunk(x + playerX, z + playerZ));
+                //StartCoroutine(LoadChunk(x + playerX, z + playerZ));
+                LoadChunk(x + playerX, z + playerZ);
+                progressChunks++;
+                LoadManager.instance.SetProgress((float)progressChunks / totalChunks);
+                if(progressChunks == totalChunks)
+                {
+                    playerObject.SetActive(true);
+                    LoadManager.instance.loadScreen.SetActive(false);
+                }
+
+                yield return null;
             }
         }
 
         lastChunkPos = new Vector2Int(playerX, playerZ);
     }
 
-    private void UpdateWorld()
+    IEnumerator UpdateWorld()
     {
         int playerX = Mathf.FloorToInt(playerObject.transform.position.x / Chunk.chunkSize);
         int playerZ = Mathf.FloorToInt(playerObject.transform.position.z / Chunk.chunkSize);
@@ -86,7 +100,9 @@ public class World : MonoBehaviour
             {
                 if (Mathf.Abs(chunk.Key.x - playerX) > renderChunks || Mathf.Abs(chunk.Key.y - playerZ) > renderChunks)
                 {
-                    StartCoroutine(UnloadChunk(chunk.Key.x, chunk.Key.y));
+                    //StartCoroutine(UnloadChunk(chunk.Key.x, chunk.Key.y));
+                    UnloadChunk(chunk.Key.x, chunk.Key.y);
+                    yield return null;
                 }
             }
 
@@ -99,7 +115,9 @@ public class World : MonoBehaviour
                     if (!chunkDict.ContainsKey(chunkPos))
                     {
                         //Debug.Log("start load chunk");
-                        StartCoroutine(LoadChunk(chunkPos.x, chunkPos.y));
+                        //StartCoroutine(LoadChunk(chunkPos.x, chunkPos.y));
+                        LoadChunk(chunkPos.x, chunkPos.y);
+                        yield return null;
                     }
                     //else
                     //{
@@ -110,7 +128,7 @@ public class World : MonoBehaviour
         }
     }
 
-    private IEnumerator LoadChunk(int x, int z)
+    private void LoadChunk(int x, int z)
     {
         GameObject chunkObject = new GameObject();
         chunkObject.transform.parent = this.transform;
@@ -126,10 +144,10 @@ public class World : MonoBehaviour
         chunk.InitChunk(cubeMat, seed);
         StartCoroutine(chunk.GenerateChunk());
 
-        yield return null;
+        //yield return null;
     }
 
-    private IEnumerator UnloadChunk(int x, int z)
+    private void UnloadChunk(int x, int z)
     {
         Vector2Int chunkPos = new Vector2Int(x, z);
         if (chunkDict.ContainsKey(chunkPos))
@@ -139,7 +157,7 @@ public class World : MonoBehaviour
 
             visibleChunks.TryRemove(chunkPos, out Chunk c);
         }
-        yield return null;
+        //yield return null;
     }
 
     public Chunk GetChunk(int x, int z)

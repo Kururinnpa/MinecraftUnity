@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class Inventory : MonoBehaviour
 {
@@ -36,7 +35,7 @@ public class Inventory : MonoBehaviour
 
             if(GameManager.instance.isCreative)
             {
-                Item item = Resources.Load<Item>("Items/" + Item.ItemTypes[(int)BlockType.LAVA]);
+                Item item = Resources.Load<Item>("Items/" + Item.ItemTypes[i % 9 + 1]);
 
                 newSlot.itemInSlot.item = item;
                 newSlot.itemInSlot.image.sprite = item.icon;

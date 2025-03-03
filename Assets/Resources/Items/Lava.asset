@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06a81874a70b28e41b83c72b019ec1ad, type: 3}
   m_Name: Lava
   m_EditorClassIdentifier: 
-  itemName: 
-  icon: {fileID: 0}
-  bType: 0
+  itemName: lava
+  icon: {fileID: 21300000, guid: c2aaa27ce144c3c4ead869d89450265b, type: 3}
+  bType: 4

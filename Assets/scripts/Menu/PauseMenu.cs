@@ -29,7 +29,7 @@ public class PauseMenu : MonoBehaviour
     public void ReturnToTitle()
     {
         Time.timeScale = 1;
-        GameManager.instance.ReturnToTitle();
+        LoadManager.instance.ReturnToTitle();
     }
 
     private IEnumerator LoadNewScene()

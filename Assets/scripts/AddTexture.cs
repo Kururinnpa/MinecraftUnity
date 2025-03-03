@@ -98,14 +98,14 @@ public class AddTexture : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
-        meshFilter = GetComponent<MeshFilter>();
+        //meshRenderer = GetComponent<MeshRenderer>();
+        //meshFilter = GetComponent<MeshFilter>();
 
-        Mesh mesh = CreateMesh();
-        meshFilter.mesh = mesh;
+        //Mesh mesh = CreateMesh();
+        //meshFilter.mesh = mesh;
 
-        AssetDatabase.CreateAsset(mesh, "Assets/cube.asset");
-        AssetDatabase.Refresh();
+        //AssetDatabase.CreateAsset(mesh, "Assets/cube.asset");
+        //AssetDatabase.Refresh();
     }
 
     // Update is called once per frame

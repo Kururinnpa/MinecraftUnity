@@ -347,9 +347,6 @@ public class Player : MonoBehaviour
                 buildType = curBuildSlot.itemInSlot.item.bType;
             else
                 buildType = BlockType.AIR;
-
-            if (curBuildSlotIndex != preIndex)
-                Debug.Log("current slot: " + curBuildSlotIndex);
         }
     }
 }
